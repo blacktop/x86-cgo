@@ -1,6 +1,6 @@
 REPO=blacktop
-NAME=x86_64-cgo
-CLI=github.com/blacktop/x86_64-cgo/cmd/disass
+NAME=x86-cgo
+CLI=github.com/blacktop/x86-cgo/cmd/disass
 CUR_VERSION=$(shell svu current)
 NEXT_VERSION=$(shell svu patch)
 
@@ -19,7 +19,7 @@ build: ## Build disass locally
 .PHONY: test
 test: ## Run disass on hello-mte
 	@echo " > disassembling hello-mte\n"
-	@dist/x86_64-cgo_darwin_amd64/disass  ../../Proteas/hello-mte/hello-mte _test
+	@dist/x86-cgo_darwin_amd64/disass  ../../Proteas/hello-mte/hello-mte _test
 
 .PHONY: dry_release
 dry_release: ## Run goreleaser without releasing/pushing artifacts to github

@@ -24,7 +24,6 @@ package cmd
 import (
 	"bytes"
 	"encoding/binary"
-	"encoding/json"
 	"fmt"
 	"io"
 	"log"
@@ -33,8 +32,8 @@ import (
 	"strings"
 
 	"github.com/blacktop/go-macho"
+	"github.com/blacktop/x86-cgo/disassemble"
 
-	"github.com/blacktop/arm64-cgo/disassemble"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -113,15 +112,15 @@ var rootCmd = &cobra.Command{
 			}
 		} else {
 			for _, arch := range fat.Arches {
-				if strings.Contains(strings.ToLower(arch.SubCPU.String(arch.CPU)), "arm64") {
+				if strings.Contains(strings.ToLower(arch.SubCPU.String(arch.CPU)), "amd64") {
 					m = arch.File
 					break
 				}
 			}
 		}
 
-		if !strings.Contains(strings.ToLower(m.FileHeader.SubCPU.String(m.CPU)), "arm64") {
-			log.Fatal("[ERROR] can only disassemble arm64 binaries")
+		if !strings.Contains(strings.ToLower(m.FileHeader.SubCPU.String(m.CPU)), "amd64") {
+			log.Fatal("[ERROR] can only disassemble x86_64 binaries")
 		}
 
 		if len(symbolName) > 0 {
@@ -181,12 +180,12 @@ var rootCmd = &cobra.Command{
 			}
 
 			if asJSON {
-				instruction, err := disassemble.Decompose(symAddr, instrValue, &resutls)
-				if err != nil {
-					log.Fatal(err)
-				}
+				// instruction, err := disassemble.Decompose(symAddr, instrValue, &resutls)
+				// if err != nil {
+				// 	log.Fatal(err)
+				// }
 
-				instructions = append(instructions, *instruction)
+				// instructions = append(instructions, *instruction)
 			} else {
 				instruction, err := disassemble.Disassemble(symAddr, instrValue, &resutls)
 				if err != nil {
@@ -203,9 +202,9 @@ var rootCmd = &cobra.Command{
 		}
 
 		if asJSON {
-			if dat, err := json.MarshalIndent(instructions, "", "   "); err == nil {
-				fmt.Println(string(dat))
-			}
+			// if dat, err := json.MarshalIndent(instructions, "", "   "); err == nil {
+			// 	fmt.Println(string(dat))
+			// }
 		}
 	},
 }
@@ -226,7 +225,7 @@ func initConfig() {
 		home, err := os.UserHomeDir()
 		cobra.CheckErr(err)
 
-		// Search config in home directory with name ".arm64-cgo" (without extension).
+		// Search config in home directory with name ".Amd64-cgo" (without extension).
 		viper.AddConfigPath(home)
 		viper.SetConfigName(".disass")
 	}

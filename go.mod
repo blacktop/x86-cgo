@@ -1,4 +1,4 @@
-module github.com/blacktop/x86_64-cgo
+module github.com/blacktop/x86-cgo
 
 go 1.16
 
