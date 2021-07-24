@@ -5,6 +5,35 @@ CUR_VERSION=$(shell svu current)
 NEXT_VERSION=$(shell svu patch)
 
 
+.PHONY: download
+download:
+	@echo "Fetching Dependancies"
+	git clone https://github.com/intelxed/xed.git disassemble/xed
+	git clone https://github.com/intelxed/mbuild.git disassemble/mbuild
+
+	@echo "Reverting commit 9bdeca6d77065e5f1b23891655a26e510ffae74a"
+	cd disassemble/xed && git revert 9bdeca6d77065e5f1b23891655a26e510ffae74a --no-edit
+
+.PHONY: build-xed
+build-xed:
+	rm -rf disassemble/xedInc
+
+	@echo "Building XED"
+	# xed now assumes building in a subdir like ./build
+	mkdir -p disassemble/build
+	# this runs very well on Linux; but it sometimes has problems with Windows And Mac
+	cd disassemble/build && \
+	../xed/mfile.py -j 9 --static --extra-flags=-fPIC --opt=3 --no-encoder install --install-dir=../xedKit && \
+	../xed/mfile.py -c
+
+	@echo "Setting Up"
+	mv disassemble/xedKit/include/xed disassemble/xedInc
+	mkdir -p disassemble/lib
+
+.PHONY: mac
+mac: build-xed
+	mv disassemble/xedKit/lib/libxed.a disassemble/lib/libxed_macos.a
+
 .PHONY: build-deps
 build-deps: ## Install the build dependencies
 	@echo " > Installing build deps"
@@ -40,6 +69,7 @@ cross: ## Create xgo releases
 clean: ## Clean up artifacts
 	@echo " > Cleaning"
 	rm -rf dist
+	rm -rf disassemble/xedKit disassemble/build
 
 # Absolutely awesome: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 help:

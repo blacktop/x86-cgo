@@ -1,7 +1,10 @@
 package disassemble
 
 /*
-#cgo CFLAGS: -I${SRCDIR}
+#cgo LDFLAGS: ${SRCDIR}/lib/libxed_macos.a
+#cgo CFLAGS: -I${SRCDIR}/xedinc
+
+#include <stdlib.h>
 
 #include "xed-decoded-inst.h"
 #include "xed-error-enum.h"

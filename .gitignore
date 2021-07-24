@@ -17,3 +17,7 @@
 .vscode
 dist/
 disass.*
+build
+mbuild
+xed
+xedKit

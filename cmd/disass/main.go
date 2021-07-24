@@ -21,7 +21,7 @@ THE SOFTWARE.
 */
 package main
 
-import "github.com/blacktop/arm64-cgo/cmd/disass/cmd"
+import "github.com/blacktop/x86-cgo/cmd/disass/cmd"
 
 func main() {
 	cmd.Execute()
