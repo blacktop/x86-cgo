@@ -45,8 +45,6 @@ github.com/armon/go-metrics v0.0.0-20180917152333-f0300d1749da/go.mod h1:Q73ZrmV
 github.com/armon/go-radix v0.0.0-20180808171621-7fddfc383310/go.mod h1:ufUuZ+zHj4x4TnLV4JWEpy2hxWSpsRywHrMgIH9cCH8=
 github.com/bgentry/speakeasy v0.1.0/go.mod h1:+zsyZBPWlz7T6j88CTgSN5bM796AkVf0kBD4zp0CCIs=
 github.com/bketelsen/crypt v0.0.4/go.mod h1:aI6NrJ0pMGgvZKL1iVgXLnfIFJtfV+bKCoqOes/6LfM=
-github.com/blacktop/arm64-cgo v1.0.16 h1:GYqp9YqkSPiH31lSOYmRbE2jj888GJyauH3R76goFqA=
-github.com/blacktop/arm64-cgo v1.0.16/go.mod h1:YJFf35tuCTSPYfofBYNZ1104477y/Epoa1fzoCB19Fk=
 github.com/blacktop/go-macho v1.1.45 h1:UifkEaM3QGMRPpXjbX1my3+cy+udQYwIGybeDJuEebg=
 github.com/blacktop/go-macho v1.1.45/go.mod h1:7Dj52AvN6Hof0+LNBHC3VQHbdDBnLM5kBrKBYbk6/3g=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=

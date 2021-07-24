@@ -22,10 +22,7 @@ THE SOFTWARE.
 package cmd
 
 import (
-	"bytes"
-	"encoding/binary"
 	"fmt"
-	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -74,12 +71,11 @@ var rootCmd = &cobra.Command{
 			log.Fatal("[ERROR] you must supply a --symbol OR --vaddr to disassemble")
 		}
 
-		var isMiddle bool
+		// var isMiddle bool
 		var symAddr uint64
 		var data []byte
 
 		var m *macho.File
-		var instructions []disassemble.Instruction
 
 		machoPath := filepath.Clean(args[0])
 
@@ -152,9 +148,9 @@ var rootCmd = &cobra.Command{
 
 			symAddr = fn.StartAddr
 
-			if startVMAddr != fn.StartAddr {
-				isMiddle = true
-			}
+			// if startVMAddr != fn.StartAddr {
+			// 	isMiddle = true
+			// }
 
 			for _, sym := range m.Symtab.Syms {
 				if sym.Value == fn.StartAddr {
@@ -163,8 +159,8 @@ var rootCmd = &cobra.Command{
 			}
 		}
 
-		var instrValue uint32
-		r := bytes.NewReader(data)
+		// var instrValue uint32
+		// r := bytes.NewReader(data)
 
 		if len(symbolName) > 0 && !asJSON {
 			fmt.Println(symbolName + ":")
@@ -172,34 +168,41 @@ var rootCmd = &cobra.Command{
 
 		var resutls [1024]byte
 
-		for {
-			err = binary.Read(r, binary.LittleEndian, &instrValue)
-
-			if err == io.EOF {
-				break
-			}
-
-			if asJSON {
-				// instruction, err := disassemble.Decompose(symAddr, instrValue, &resutls)
-				// if err != nil {
-				// 	log.Fatal(err)
-				// }
-
-				// instructions = append(instructions, *instruction)
-			} else {
-				instruction, err := disassemble.Disassemble(symAddr, instrValue, &resutls)
-				if err != nil {
-					log.Fatal(err)
-				}
-				if isMiddle && startVMAddr == symAddr {
-					fmt.Printf("👉%08x:  %s\t%s\n", uint64(symAddr), disassemble.GetOpCodeByteString(instrValue), instruction)
-				} else {
-					fmt.Printf("%#08x:  %s\t%s\n", uint64(symAddr), disassemble.GetOpCodeByteString(instrValue), instruction)
-				}
-			}
-
-			symAddr += uint64(binary.Size(uint32(0)))
+		instruction, err := disassemble.Disassemble(symAddr, data, &resutls)
+		if err != nil {
+			log.Fatal(err)
 		}
+		fmt.Println(instruction)
+		// var resutls [1024]byte
+
+		// for {
+		// 	err = binary.Read(r, binary.LittleEndian, &instrValue)
+
+		// 	if err == io.EOF {
+		// 		break
+		// 	}
+
+		// 	if asJSON {
+		// 		// instruction, err := disassemble.Decompose(symAddr, instrValue, &resutls)
+		// 		// if err != nil {
+		// 		// 	log.Fatal(err)
+		// 		// }
+
+		// 		// instructions = append(instructions, *instruction)
+		// 	} else {
+		// 		instruction, err := disassemble.Disassemble(symAddr, instrValue, &resutls)
+		// 		if err != nil {
+		// 			log.Fatal(err)
+		// 		}
+		// 		if isMiddle && startVMAddr == symAddr {
+		// 			fmt.Printf("👉%08x:  %s\t%s\n", uint64(symAddr), disassemble.GetOpCodeByteString(instrValue), instruction)
+		// 		} else {
+		// 			fmt.Printf("%#08x:  %s\t%s\n", uint64(symAddr), disassemble.GetOpCodeByteString(instrValue), instruction)
+		// 		}
+		// 	}
+
+		// 	symAddr += uint64(binary.Size(uint32(0)))
+		// }
 
 		if asJSON {
 			// if dat, err := json.MarshalIndent(instructions, "", "   "); err == nil {
