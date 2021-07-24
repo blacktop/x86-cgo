@@ -43,7 +43,7 @@ build-deps: ## Install the build dependencies
 .PHONY: build
 build: ## Build disass locally
 	@echo " > Building locally"
-	CGO_ENABLED=1 go build -o disass.${NEXT_VERSION} ./cmd/disass
+	CGO_ENABLED=1 go build -a -ldflags "-linkmode external -extldflags '-static' -s -w" -o disass.${NEXT_VERSION} ./cmd/disass
 
 .PHONY: test
 test: ## Run disass on hello-mte
