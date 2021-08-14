@@ -7,6 +7,10 @@
 
 > Golang bindings for the Binary Ninja [x86/x64 Disassembler](https://github.com/Vector35/arch-x86).
 
+## NOTE
+
+I might abandon in favor of https://github.com/jpap/go-zydis
+
 ## Getting Started
 
 ```
